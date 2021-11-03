@@ -19,30 +19,36 @@ function playGame () {
   gameContainer.classList.remove('d-none');
   gameContainer.innerHTML = '';
 
-  let bombs = generateBombs (16, 1, 49);
+  // Variabile che stabilisce se il gioco è finito
+  let isGiocoFinito = false;
 
+  let cellsNumber;
+  let bombsNumber;
+  let levelString;
 
   if (leavelDifficulty.value === '1') {
-    console.log('easy');
-    howManySquare(gameContainer,'square easy', 100);
-    let bombs = generateBombs (16, 1, 100);
-    console.log('easy bombe', bombs);
+    // console.log('easy');
+    cellsNumber = 100;
+    bombsNumber = 16;
+    levelString = 'easy';
   } else if (leavelDifficulty.value === '2') {
-    console.log('hard');
-    howManySquare(gameContainer,'square hard', 81);
-    let bombs = generateBombs (20, 1, 81);
-    console.log('hard bombe', bombs);
+    // console.log('hard');
+    cellsNumber = 81;
+    bombsNumber = 16;
+    levelString = 'hard';
   } else if (leavelDifficulty.value === '3') {
-    console.log('crazy');
-    howManySquare(gameContainer,'square crazy', 49);
-    let bombs = generateBombs (25, 1, 49);
-    console.log('crazy bombe', bombs);
+    // console.log('crazy');
+    cellsNumber = 49;
+    bombsNumber = 16;
+    levelString = 'crazy';
   } else {
     title.classList.remove('d-none');
     gameContainer.classList.add('d-none');
   }
 
-  
+  howManySquare(gameContainer,`square ${levelString}`, cellsNumber);
+  let bombs = generateBombs (bombsNumber, 1, cellsNumber);
+
 
 
   /**
@@ -59,7 +65,7 @@ function playGame () {
   };
 
   /**
-   * Funzione che genera un numero max di quadrati 
+   * Funzione che genera un numero massimo di quadrati con una classe 
    * @param {div} elementInHtml 
    * @param {string} className 
    * @param {number} max 
@@ -75,27 +81,46 @@ function playGame () {
   };
 
 
+  // Funzione che gestisce il click del quadrato
   function clickSquare (event) {
-    this.classList.toggle('clicked');
 
-    const numberClick = parseInt(event.target.innerText);
-    console.log ('numero cliccato', numberClick);
-    console.log('arrey bombe', bombs);
-    console.log(this);
+    if (isGiocoFinito === false) {
 
-    if (bombs.indexOf(numberClick) !== -1) {
-      this.classList.add('bomb');
+      this.classList.add('clicked');
+
+      const numberClick = parseInt(event.target.innerText);
+      console.log ('numero cliccato', numberClick);
+      console.log('arrey bombe', bombs);
       console.log(this);
-      console.log('end',this);
-    } 
-  };
+
+      if (bombs.indexOf(numberClick) !== -1) {
+        this.classList.add('bomb');
+        console.log('Hai perso!');
+        isGiocoFinito = true;
+        endGame();
+      } else {
+        console.log('Continua');
+        
+      }
+    } else {
+
+      console.log('inutile che fai click, il gioco è finito');
+    }
+     
+  }
+
+  function endGame() {
+
+    // gestiamo la fine del gioco
+
+  }
 
   /**
    * Funzione che genera un numero random di bombe
    * @param {number} bombNumber 
    * @param {number} min 
    * @param {number} max 
-   * @returns 
+   * @returns Un Array con i numeri generati 
    */
   function generateBombs (bombNumber, min, max) {
     const bombs = [];
@@ -107,13 +132,19 @@ function playGame () {
       }
     }
     return bombs;
-  }
+  };
 
+  /**
+   * Funziona che genera un numero random to, from
+   * @param {number} min 
+   * @param {number} max 
+   * @returns Numero randrom
+   */
   function generateRandomNumber (min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
-  }
+  };
 
-}
+};
 
 
 
