@@ -25,12 +25,12 @@ function playGame () {
 
   // Variabile che stabilisce se il gioco è finito
   let isGiocoFinito = false;
+  let click = 0;
   let textResult = '';
 
   let cellsNumber;
   let bombsNumber;
   let levelString;
-  let click = 0;
 
 
   if (leavelDifficulty.value === '1') {
@@ -46,7 +46,7 @@ function playGame () {
   } else if (leavelDifficulty.value === '3') {
     // console.log('crazy');
     cellsNumber = 49;
-    bombsNumber = 1;
+    bombsNumber = 16;
     levelString = 'crazy';
   } else {
     title.classList.remove('d-none');
@@ -96,13 +96,13 @@ function playGame () {
       this.classList.add('clicked');
 
       const numberClick = parseInt(event.target.innerText);
-      console.log ('numero cliccato', numberClick);
-      console.log('arrey bombe', bombs);
-      console.log(this);
+      // console.log ('numero cliccato', numberClick);
+      // console.log('arrey bombe', bombs);
+      // console.log(this);
 
       if (bombs.indexOf(numberClick) !== -1) {
         this.classList.add('bomb');
-        console.log('Hai perso!');
+        // console.log('Hai perso!');
         isGiocoFinito = true;
         textResult = `
         <p>
@@ -112,7 +112,7 @@ function playGame () {
         `;
         endGame();
       } else if (click < (cellsNumber - bombsNumber)) {
-        console.log('Continua');
+        // console.log('Continua');
         click++;
       } else {
         isGiocoFinito = true;
@@ -122,13 +122,10 @@ function playGame () {
           IL PUNTEGGIO OTTENUTO E' <span>${click}</span>.
         </p>
         `;
-        console.log('complimenti hai vinto');
+        // console.log('complimenti hai vinto');
         endGame();
       }
-      console.log('qunati click',click);
-    } else {
-      // endGame();
-      console.log('inutile che fai click, il gioco è finito');
+      // console.log('qunati click',click);
     }
      
   }
@@ -136,7 +133,19 @@ function playGame () {
   function endGame() {
     resultFinal.classList.remove('d-none');
     resultFinal.innerHTML = textResult;
-    
+
+    const allSquare = document.querySelectorAll('.square');
+    // console.log(allSquare);
+
+    console.log('bombe a gioco finito',bombs);
+
+    for (let i = 0; i < allSquare.length; i++) {
+      if (bombs.indexOf(parseInt(allSquare[i].innerText)) !== -1) {
+        allSquare[i].classList.add('bomb');
+        console.log('sono quiiiiiiiiiii',allSquare[i]);
+      }
+      console.log(`${i}`,allSquare[i]);
+    }
 
   }
 
