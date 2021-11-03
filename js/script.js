@@ -19,12 +19,19 @@ function playGame () {
   gameContainer.classList.remove('d-none');
   gameContainer.innerHTML = '';
 
+  const resultFinal = document.querySelector('.game-result');
+  resultFinal.classList.add('d-none');
+  resultFinal.innerHTML = '';
+
   // Variabile che stabilisce se il gioco è finito
   let isGiocoFinito = false;
+  let textResult = '';
 
   let cellsNumber;
   let bombsNumber;
   let levelString;
+  let click = 0;
+
 
   if (leavelDifficulty.value === '1') {
     // console.log('easy');
@@ -39,7 +46,7 @@ function playGame () {
   } else if (leavelDifficulty.value === '3') {
     // console.log('crazy');
     cellsNumber = 49;
-    bombsNumber = 16;
+    bombsNumber = 1;
     levelString = 'crazy';
   } else {
     title.classList.remove('d-none');
@@ -97,21 +104,39 @@ function playGame () {
         this.classList.add('bomb');
         console.log('Hai perso!');
         isGiocoFinito = true;
+        textResult = `
+        <p>
+          HAI TROVATO LA BOMBA, <br>
+          IL PUNTEGGIO OTTENUTO E' <span>${click}</span>.
+        </p>
+        `;
         endGame();
-      } else {
+      } else if (click < (cellsNumber - bombsNumber)) {
         console.log('Continua');
-        
+        click++;
+      } else {
+        isGiocoFinito = true;
+        textResult = `
+        <p>
+          HAI COMPLETATO IL GIOCO, <br>
+          IL PUNTEGGIO OTTENUTO E' <span>${click}</span>.
+        </p>
+        `;
+        console.log('complimenti hai vinto');
+        endGame();
       }
+      console.log('qunati click',click);
     } else {
-
+      // endGame();
       console.log('inutile che fai click, il gioco è finito');
     }
      
   }
 
   function endGame() {
-
-    // gestiamo la fine del gioco
+    resultFinal.classList.remove('d-none');
+    resultFinal.innerHTML = textResult;
+    
 
   }
 

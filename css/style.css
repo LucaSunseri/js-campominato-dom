@@ -120,6 +120,17 @@ main span {
   background-color: red !important;
 }
 
+.game-result {
+  font-weight: 600;
+  margin-left: 25px;
+  text-align: center;
+}
+
+.game-result p span {
+  color: red;
+}
+
+
 /* FOOTER */
 footer {
   display: flex;
